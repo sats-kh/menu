@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">가게 관리</h2>
+<form method="POST" class="row g-3 mb-4">
+  <div class="col-md-6">
+    <input type="text" name="name" class="form-control" placeholder="가게 이름 입력" required>
+  </div>
+  <div class="col-md-4">
+    <select name="category" class="form-select" required>
+      <option value="" disabled selected>카테고리 선택</option>
+      {% for cat in categories %}
+        <option value="{{ cat }}">{{ cat }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-2">
+    <button type="submit" class="btn btn-primary w-100">추가</button>
+  </div>
+</form>
+
+<div class="row">
+  {% for cat, items in data.items() %}
+  <div class="col-md-4 mb-4">
+    <div class="card">
+      <div class="card-header bg-secondary text-white">{{ cat }}</div>
+      <ul class="list-group list-group-flush">
+        {% for item in items %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          {{ item.name }}
+          <form method="POST" action="/delete/{{ item.id }}" style="margin:0;">
+            <button type="submit" class="btn btn-sm btn-danger">삭제</button>
+          </form>
+        </li>
+        {% else %}
+        <li class="list-group-item text-muted">등록된 가게가 없습니다.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
